@@ -4,11 +4,14 @@ let selectedParts = [];
 let xp = parseInt(localStorage.getItem('ianrobotiks-xp') || '0');
 
 const PART_ICONS = {
-  "arduino-uno": "🟦", "esp32": "📗", "rpi-zero": "🟥",
-  "sg90": "🦾", "tt-motor": "⚙️", "nema17": "🔲",
-  "hc-sr04": "📡", "mpu6050": "📐", "ir-line": "👁️",
-  "9v-battery": "🔋", "lipo-2s": "🔋",
-  "l298n": "🔌", "chassis-2wd": "🚗", "wheel-65mm": "🛞"
+  "arduino-uno": "🟦", "esp32": "📗", "rpi-zero": "🟥", "arduino-nano": "🔷", "pico": "💚",
+  "sg90": "🦾", "mg996r": "💪", "tt-motor": "⚙️", "n20-motor": "🔹", "nema17": "🔲", "nema23": "⬛",
+  "hc-sr04": "📡", "vl53l0x": "🔴", "mpu6050": "📐", "mpu9250": "🧭", "ir-line": "👁️",
+  "pir": "👻", "dht22": "🌡️", "camera-module": "📷",
+  "9v-battery": "🔋", "lipo-2s": "🔋", "lipo-3s": "🔋", "18650-holder": "🔋", "buck-5v": "⚡",
+  "l298n": "🔌", "a4988": "🎛️", "tb6600": "🎛️", "relay-module": "🔗",
+  "chassis-2wd": "🚗", "chassis-4wd": "🚙", "wheel-65mm": "🛞", "omni-wheel": "⭕",
+  "servo-bracket": "📎", "breadboard": "🧩", "ssd1306": "📺", "ws2812b": "💡"
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -49,7 +52,6 @@ function initPartsLibrary() {
   const grid = document.getElementById('parts-grid');
   const search = document.getElementById('part-search');
   const catFilter = document.getElementById('category-filter');
-
   function render(parts) {
     grid.innerHTML = parts.map(p => `
       <div class="part-card" data-id="${p.id}">
@@ -57,14 +59,12 @@ function initPartsLibrary() {
         <h3>${p.name}</h3>
         <span class="category-tag">${CATEGORIES[p.category] || p.category}</span>
         <div class="specs-preview">${p.voltage || ''} ${p.torque ? '• ' + p.torque : ''}</div>
-      </div>
-    `).join('');
+      </div>`).join('');
     grid.querySelectorAll('.part-card').forEach(card => {
       card.addEventListener('click', () => showPartDetail(PARTS.find(p => p.id === card.dataset.id)));
     });
   }
   render(PARTS);
-
   search.addEventListener('input', () => {
     const q = search.value.toLowerCase().trim();
     const cat = catFilter.value;
@@ -97,16 +97,13 @@ function showPartDetail(p) {
     </div>
     ${p.pinout ? `<div style="margin-top:1rem"><strong>Pinout</strong><p style="font-family:monospace;font-size:0.9rem;margin-top:0.35rem">${p.pinout}</p></div>` : ''}
     ${p.useCases ? `<div style="margin-top:1rem"><strong>Typical Use Cases</strong><p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.35rem">${p.useCases}</p></div>` : ''}
-    ${p.compatible ? `<div style="margin-top:1rem"><strong>Compatible With</strong><p style="font-size:0.9rem;margin-top:0.35rem">${p.compatible.join(', ')}</p></div>` : ''}
-  `;
+    ${p.compatible ? `<div style="margin-top:1rem"><strong>Compatible With</strong><p style="font-size:0.9rem;margin-top:0.35rem">${p.compatible.join(', ')}</p></div>` : ''}`;
 }
 
 function initBuilder() {
   const list = document.getElementById('builder-parts-list');
   list.innerHTML = PARTS.map(p => `<div class="builder-part-item" data-id="${p.id}"><span class="mini-icon">${PART_ICONS[p.id]||'🔩'}</span> ${p.name}</div>`).join('');
-  list.querySelectorAll('.builder-part-item').forEach(item => {
-    item.addEventListener('click', () => addPartToBuild(item.dataset.id));
-  });
+  list.querySelectorAll('.builder-part-item').forEach(item => item.addEventListener('click', () => addPartToBuild(item.dataset.id)));
   document.getElementById('clear-build').addEventListener('click', clearBuild);
   document.getElementById('validate-build').addEventListener('click', validateBuild);
   document.querySelectorAll('.mode-btn').forEach(btn => {
@@ -116,9 +113,7 @@ function initBuilder() {
       renderBuilderView(btn.dataset.mode);
     });
   });
-  document.querySelectorAll('.preset-btn').forEach(btn => {
-    btn.addEventListener('click', () => loadPreset(btn.dataset.preset));
-  });
+  document.querySelectorAll('.preset-btn').forEach(btn => btn.addEventListener('click', () => loadPreset(btn.dataset.preset)));
 }
 
 function addPartToBuild(id) {
@@ -129,17 +124,14 @@ function addPartToBuild(id) {
   renderBuilderView(document.querySelector('.mode-btn.active').dataset.mode);
   addXP(5);
 }
-
 function clearBuild() {
   selectedParts = [];
   updateBuildStatus();
   document.getElementById('builder-canvas').innerHTML = `<div class="canvas-placeholder">Click parts from the list to add them to your robot</div>`;
   document.getElementById('compatibility-notes').innerHTML = '';
 }
-
 function updateBuildStatus() {
-  const status = document.getElementById('build-status');
-  status.textContent = selectedParts.length === 0 ? 'No parts added yet' :
+  document.getElementById('build-status').textContent = selectedParts.length === 0 ? 'No parts added yet' :
     `${selectedParts.length} part(s): ${selectedParts.map(p => p.name).join(', ')}`;
 }
 
@@ -149,37 +141,26 @@ function renderBuilderView(mode) {
     canvas.innerHTML = `<div class="canvas-placeholder">Click parts from the list to start building</div>`;
     return;
   }
-
   if (mode === 'wiring') {
-    canvas.innerHTML = `
-      <h3 style="margin-bottom:0.75rem;color:var(--primary)">Wiring / Circuit View</h3>
-      <div class="wiring-list">
-        ${selectedParts.map(p => `
-          <div style="margin-bottom:0.6rem;padding:0.55rem;background:var(--surface-2);border-radius:6px;border-left:3px solid var(--primary)">
-            <strong style="color:var(--primary)">${PART_ICONS[p.id]||'🔩'} ${p.name}</strong><br>
-            <span class="wire-power">PWR</span> / <span class="wire-gnd">GND</span> / <span class="wire-signal">SIG</span>: ${p.pinout || 'See datasheet'}
-          </div>`).join('')}
-        <p style="color:var(--text-muted);margin-top:1rem;font-size:0.85rem">
-          Connect <span class="wire-power">power</span> and <span class="wire-gnd">ground</span> first, then <span class="wire-signal">signal</span> wires. Always verify voltage levels.
-        </p>
-      </div>`;
+    canvas.innerHTML = `<h3 style="margin-bottom:0.75rem;color:var(--primary)">Wiring / Circuit View</h3>
+      <div class="wiring-list">${selectedParts.map(p => `
+        <div style="margin-bottom:0.6rem;padding:0.55rem;background:var(--surface-2);border-radius:6px;border-left:3px solid var(--primary)">
+          <strong style="color:var(--primary)">${PART_ICONS[p.id]||'🔩'} ${p.name}</strong><br>
+          <span class="wire-power">PWR</span> / <span class="wire-gnd">GND</span> / <span class="wire-signal">SIG</span>: ${p.pinout || 'See datasheet'}
+        </div>`).join('')}
+        <p style="color:var(--text-muted);margin-top:1rem;font-size:0.85rem">Connect <span class="wire-power">power</span> and <span class="wire-gnd">ground</span> first, then <span class="wire-signal">signal</span> wires.</p></div>`;
   } else if (mode === 'assembly') {
-    canvas.innerHTML = `
-      <h3 style="margin-bottom:0.75rem;color:var(--primary)">Visual Assembly — Component Replicas</h3>
-      <div class="visual-parts">
-        ${selectedParts.map(p => `
-          <div class="visual-part">
-            <span class="vp-icon">${PART_ICONS[p.id]||'🔩'}</span>
-            <div class="vp-name">${p.name}</div>
-            <div class="vp-cat">${CATEGORIES[p.category]||p.category}</div>
-            <div class="vp-wire" title="Connection point"></div>
-          </div>`).join('')}
-      </div>
-      <p style="margin-top:1.25rem;color:var(--text-muted);font-size:0.85rem;text-align:center">
-        Green dots mark connection points. Switch to <strong>Wiring</strong> for pin detail or <strong>Code</strong> for firmware.
-      </p>`;
+    canvas.innerHTML = `<h3 style="margin-bottom:0.75rem;color:var(--primary)">Visual Assembly — Component Replicas</h3>
+      <div class="visual-parts">${selectedParts.map(p => `
+        <div class="visual-part">
+          <span class="vp-icon">${PART_ICONS[p.id]||'🔩'}</span>
+          <div class="vp-name">${p.name}</div>
+          <div class="vp-cat">${CATEGORIES[p.category]||p.category}</div>
+          <div class="vp-wire" title="Connection point"></div>
+        </div>`).join('')}</div>
+      <p style="margin-top:1.25rem;color:var(--text-muted);font-size:0.85rem;text-align:center">Green dots mark connection points. Use Wiring or Code tabs for more detail.</p>`;
   } else if (mode === 'code') {
-    const hasServo = selectedParts.some(p => p.id === 'sg90');
+    const hasServo = selectedParts.some(p => p.id === 'sg90' || p.id === 'mg996r');
     const hasUltrasonic = selectedParts.some(p => p.id === 'hc-sr04');
     const hasMotorDriver = selectedParts.some(p => p.id === 'l298n');
     const hasController = selectedParts.some(p => p.category === 'microcontroller');
@@ -208,8 +189,8 @@ function validateBuild() {
   const issues = [];
   if (!selectedParts.some(p => p.category === 'microcontroller')) issues.push('No microcontroller — the robot needs a brain.');
   if (!selectedParts.some(p => p.category === 'power')) issues.push('No power source — the robot needs energy.');
-  if (selectedParts.some(p => p.category === 'motor') && !selectedParts.some(p => p.id === 'l298n' || p.id === 'sg90'))
-    issues.push('DC/stepper motor present but no motor driver (L298N). Servos are an exception.');
+  if (selectedParts.some(p => p.category === 'motor') && !selectedParts.some(p => p.id === 'l298n' || p.id === 'sg90' || p.id === 'mg996r'))
+    issues.push('DC/stepper motor present but no motor driver. Servos are an exception.');
   if (issues.length === 0) {
     notes.innerHTML = '<p style="color:var(--primary);font-weight:600">✓ Design looks viable! No major issues detected.</p>';
     addXP(20);
@@ -222,8 +203,10 @@ function loadPreset(name) {
   clearBuild();
   const presets = {
     'line-follower': ['arduino-uno','tt-motor','l298n','ir-line','9v-battery','chassis-2wd','wheel-65mm'],
-    'obstacle-avoider': ['arduino-uno','tt-motor','l298n','hc-sr04','9v-battery','chassis-2wd'],
-    'robotic-arm': ['arduino-uno','sg90','sg90','sg90','9v-battery']
+    'obstacle-avoider': ['arduino-uno','tt-motor','l298n','hc-sr04','9v-battery','chassis-2wd','ssd1306'],
+    'robotic-arm': ['arduino-uno','sg90','sg90','sg90','mg996r','9v-battery','servo-bracket'],
+    'balance-bot': ['esp32','mpu6050','n20-motor','n20-motor','lipo-2s','l298n'],
+    'vision-bot': ['rpi-zero','camera-module','chassis-2wd','tt-motor','l298n','lipo-2s']
   };
   (presets[name]||[]).forEach(id => { const p = PARTS.find(x=>x.id===id); if(p) selectedParts.push({...p}); });
   updateBuildStatus();
@@ -243,10 +226,9 @@ function initPrintStudio() {
   grid.querySelectorAll('.part-card').forEach(card => {
     card.addEventListener('click', () => {
       const part = PRINTABLE_PARTS.find(p => p.id === card.dataset.id);
-      document.getElementById('print-3d-viewer').innerHTML = `
-        <div style="text-align:center"><div style="font-size:3rem;margin-bottom:0.5rem">🧊</div>
+      document.getElementById('print-3d-viewer').innerHTML = `<div style="text-align:center"><div style="font-size:3rem;margin-bottom:0.5rem">🧊</div>
         <strong>${part.name}</strong>
-        <p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.5rem">3D preview — rotate & inspect (Three.js expansion coming)</p></div>`;
+        <p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.5rem">3D preview placeholder</p></div>`;
       const settings = document.getElementById('print-settings');
       settings.style.display = 'block';
       settings.innerHTML = `<h4 style="margin:1rem 0 0.5rem;color:var(--primary)">Recommended Print Settings</h4>
@@ -255,7 +237,7 @@ function initPrintStudio() {
           <div class="detail-row"><span>Layer Height</span><span>${part.layer}</span></div>
           <div class="detail-row"><span>Infill</span><span>${part.infill}</span></div>
           <div class="detail-row"><span>Est. Time</span><span>${part.time}</span></div>
-        </div>`;
+        </div>${part.notes ? `<p style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-muted)">${part.notes}</p>` : ''}`;
     });
   });
 }
@@ -316,6 +298,5 @@ function calcTorque() {
   if (isNaN(f)||isNaN(r)) { document.getElementById('torque-result').textContent = 'Enter valid values'; return; }
   document.getElementById('torque-result').textContent = `Torque = ${(f*r).toFixed(3)} N·m`; addXP(3);
 }
-
 function addXP(amount) { xp += amount; localStorage.setItem('ianrobotiks-xp', xp); updateXP(); }
 function updateXP() { document.getElementById('xp-value').textContent = xp; }
