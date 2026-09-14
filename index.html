@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -59,7 +59,7 @@
       <section id="section-builder" class="section">
         <div class="section-header">
           <h1>Robot Builder / Simulator</h1>
-          <p class="subtitle">Assemble a virtual robot — switch between Wiring, 3D, and Code views</p>
+          <p class="subtitle">Assemble a virtual robot — switch between Wiring, Assembly, and Code views</p>
         </div>
         <div class="builder-layout">
           <div class="builder-sidebar">
@@ -69,17 +69,19 @@
             <div class="preset-list">
               <button class="preset-btn" data-preset="line-follower">Line Follower</button>
               <button class="preset-btn" data-preset="obstacle-avoider">Obstacle Avoider</button>
-              <button class="preset-btn" data-preset="robotic-arm">Simple Robotic Arm</button>
+              <button class="preset-btn" data-preset="robotic-arm">Robotic Arm</button>
+              <button class="preset-btn" data-preset="balance-bot">Balance Bot</button>
+              <button class="preset-btn" data-preset="vision-bot">Vision Robot</button>
             </div>
           </div>
           <div class="builder-main">
             <div class="mode-tabs">
               <button class="mode-btn active" data-mode="wiring">Wiring / Circuit</button>
-              <button class="mode-btn" data-mode="assembly">3D Assembly</button>
+              <button class="mode-btn" data-mode="assembly">Visual Assembly</button>
               <button class="mode-btn" data-mode="code">Code</button>
             </div>
             <div id="builder-canvas" class="builder-canvas">
-              <div class="canvas-placeholder">Drag parts here or click them from the list to add</div>
+              <div class="canvas-placeholder">Click parts from the list to add them to your robot</div>
             </div>
             <div class="builder-actions">
               <button id="clear-build" class="secondary-btn">Clear Build</button>
@@ -97,7 +99,7 @@
       <section id="section-print" class="section">
         <div class="section-header">
           <h1>3D Print Studio</h1>
-          <p class="subtitle">Browse printable parts, customize, and download STLs</p>
+          <p class="subtitle">Browse printable parts and recommended settings</p>
         </div>
         <div class="print-layout">
           <div id="print-parts-grid" class="parts-grid"></div>
