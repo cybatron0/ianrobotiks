@@ -234,3 +234,108 @@ body {
 .wiring-list .wire-power { color: #ff4466; }
 .wiring-list .wire-gnd { color: #888; }
 .wiring-list .wire-signal { color: var(--accent); }
+
+/* Enhanced components */
+.safety-note {
+  margin-top: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  background: rgba(255, 170, 0, 0.12);
+  border: 1px solid rgba(255, 170, 0, 0.35);
+  border-radius: 8px;
+  color: #ffcc66;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+.view-title { margin-bottom: 0.75rem; color: var(--primary); font-size: 1.1rem; }
+.hint-text { margin-top: 1rem; color: var(--text-muted); font-size: 0.85rem; text-align: center; }
+.wire-card {
+  margin-bottom: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  background: var(--surface-2);
+  border-radius: 6px;
+  border-left: 3px solid var(--primary);
+  font-size: 0.85rem;
+}
+.wiring-canvas-wrap {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+.wiring-svg { width: 100%; height: auto; min-height: 220px; display: block; }
+.visual-part { position: relative; animation: fadeInUp 0.35s ease both; }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.remove-part {
+  position: absolute; top: 4px; right: 4px;
+  width: 20px; height: 20px; border-radius: 50%;
+  border: none; background: rgba(255,68,102,0.25); color: #ff6688;
+  cursor: pointer; font-size: 14px; line-height: 1; padding: 0;
+}
+.remove-part:hover { background: rgba(255,68,102,0.5); }
+.code-block {
+  background: var(--bg);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow: auto;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  font-family: 'JetBrains Mono', monospace;
+  border: 1px solid var(--border);
+  max-height: 480px;
+  white-space: pre-wrap;
+}
+.code-actions { margin-bottom: 0.5rem; }
+.lesson-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+.module-card.completed { border-color: var(--primary); box-shadow: var(--glow); }
+.quiz-box {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.quiz-q { margin-bottom: 1rem; }
+.quiz-opt {
+  display: block;
+  margin: 0.35rem 0;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.quiz-opt:hover { background: rgba(0,255,136,0.08); }
+.badge-pill {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  margin: 0.15rem;
+  background: rgba(0,255,136,0.12);
+  border: 1px solid rgba(0,255,136,0.3);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  color: var(--primary);
+}
+#badges-display { margin-top: 0.5rem; }
+#pwm-bar-bg {
+  height: 12px;
+  background: var(--bg);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+  border: 1px solid var(--border);
+}
+#pwm-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width 0.2s;
+}
