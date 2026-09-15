@@ -59,7 +59,7 @@
       <section id="section-builder" class="section">
         <div class="section-header">
           <h1>Robot Builder / Simulator</h1>
-          <p class="subtitle">Assemble a virtual robot — switch between Wiring, Assembly, and Code views</p>
+          <p class="subtitle">Assemble a virtual robot — Wiring, Assembly, and Code views</p>
         </div>
         <div class="builder-layout">
           <div class="builder-sidebar">
@@ -92,6 +92,8 @@
             <h3>Build Status</h3>
             <p id="build-status">No parts added yet</p>
             <div id="compatibility-notes"></div>
+            <h3 style="margin-top:1rem">Safety Notes</h3>
+            <div id="safety-panel"></div>
           </div>
         </div>
       </section>
@@ -115,7 +117,7 @@
       <section id="section-lessons" class="section">
         <div class="section-header">
           <h1>Structured Lessons</h1>
-          <p class="subtitle">Learn robotics from the ground up</p>
+          <p class="subtitle">Learn robotics from the ground up — with quizzes</p>
         </div>
         <div id="modules-grid" class="modules-grid"></div>
         <div id="lesson-content" style="display:none;"></div>
@@ -124,10 +126,61 @@
       <section id="section-tools" class="section">
         <div class="section-header"><h1>Handy Robotics Tools</h1></div>
         <div class="tools-grid">
-          <div class="tool-card"><h3>Ohm's Law Calculator</h3><div class="tool-form"><label>Voltage (V) <input type="number" id="ohm-v" step="any"></label><label>Current (A) <input type="number" id="ohm-i" step="any"></label><button onclick="calcOhms()" class="primary-btn">Calculate Resistance</button><p id="ohm-result" class="result-text"></p></div></div>
-          <div class="tool-card"><h3>Battery Life Estimator</h3><div class="tool-form"><label>Capacity (mAh) <input type="number" id="batt-cap" step="any"></label><label>Current Draw (mA) <input type="number" id="batt-draw" step="any"></label><button onclick="calcBattery()" class="primary-btn">Estimate Runtime</button><p id="batt-result" class="result-text"></p></div></div>
-          <div class="tool-card"><h3>Gear Ratio Calculator</h3><div class="tool-form"><label>Driven Teeth <input type="number" id="gear-driven" step="1"></label><label>Driving Teeth <input type="number" id="gear-driving" step="1"></label><button onclick="calcGear()" class="primary-btn">Calculate Ratio</button><p id="gear-result" class="result-text"></p></div></div>
-          <div class="tool-card"><h3>Motor Torque Estimator</h3><div class="tool-form"><label>Force (N) <input type="number" id="torque-f" step="any"></label><label>Radius (m) <input type="number" id="torque-r" step="any"></label><button onclick="calcTorque()" class="primary-btn">Calculate Torque</button><p id="torque-result" class="result-text"></p></div></div>
+          <div class="tool-card">
+            <h3>Ohm's Law Calculator</h3>
+            <div class="tool-form">
+              <label>Voltage (V) <input type="number" id="ohm-v" step="any"></label>
+              <label>Current (A) <input type="number" id="ohm-i" step="any"></label>
+              <button onclick="calcOhms()" class="primary-btn">Calculate Resistance</button>
+              <p id="ohm-result" class="result-text"></p>
+            </div>
+          </div>
+          <div class="tool-card">
+            <h3>Battery Life Estimator</h3>
+            <div class="tool-form">
+              <label>Capacity (mAh) <input type="number" id="batt-cap" step="any"></label>
+              <label>Current Draw (mA) <input type="number" id="batt-draw" step="any"></label>
+              <button onclick="calcBattery()" class="primary-btn">Estimate Runtime</button>
+              <p id="batt-result" class="result-text"></p>
+            </div>
+          </div>
+          <div class="tool-card">
+            <h3>Gear Ratio Calculator</h3>
+            <div class="tool-form">
+              <label>Driven Teeth <input type="number" id="gear-driven" step="1"></label>
+              <label>Driving Teeth <input type="number" id="gear-driving" step="1"></label>
+              <button onclick="calcGear()" class="primary-btn">Calculate Ratio</button>
+              <p id="gear-result" class="result-text"></p>
+            </div>
+          </div>
+          <div class="tool-card">
+            <h3>Motor Torque Estimator</h3>
+            <div class="tool-form">
+              <label>Force (N) <input type="number" id="torque-f" step="any"></label>
+              <label>Radius (m) <input type="number" id="torque-r" step="any"></label>
+              <button onclick="calcTorque()" class="primary-btn">Calculate Torque</button>
+              <p id="torque-result" class="result-text"></p>
+            </div>
+          </div>
+          <div class="tool-card">
+            <h3>PWM Duty Visualizer</h3>
+            <div class="tool-form">
+              <label>Duty Cycle (%) <input type="number" id="pwm-duty" min="0" max="100" step="1" value="50"></label>
+              <div id="pwm-bar-bg"><div id="pwm-bar"></div></div>
+              <button onclick="calcPWM()" class="primary-btn">Visualize</button>
+              <p id="pwm-result" class="result-text"></p>
+            </div>
+          </div>
+          <div class="tool-card">
+            <h3>Voltage Divider</h3>
+            <div class="tool-form">
+              <label>Vin (V) <input type="number" id="div-vin" step="any"></label>
+              <label>R1 (Ω) <input type="number" id="div-r1" step="any"></label>
+              <label>R2 (Ω) <input type="number" id="div-r2" step="any"></label>
+              <button onclick="calcDivider()" class="primary-btn">Calculate Vout</button>
+              <p id="div-result" class="result-text"></p>
+            </div>
+          </div>
         </div>
       </section>
 
